@@ -72,12 +72,69 @@ group by sousevolution
 having count(sousevolution) > 2
 
 14)
-SELECT distinct *
-FROM pokemon, (SELECT distinct *
+WITH RECURSIVE from_chetiflor as 
+(SELECT id, nom, sousevolution
 FROM pokemon
-WHERE sousevolution = 'Chetiflor') as parcas
-WHERE pokemon.sousevolution = parcas.nom
+WHERE nom = 'Chetiflor'
+UNION
+SELECT e.id, e.nom, e.sousevolution 
+FROM pokemon e
+inner join from_chetiflor f ON f.nom = e.sousevolution
+)SELECT *
+FROM from_chetiflor
 
-je suis arrive jusqu ici
+15)
+WITH RECURSIVE table_pokemon_feu as 
+(SELECT id, nom, type, sousevolution
+from pokemon
+WHERE type = 'FEU'
+UNION
+SELECT p.id, p.nom, p.type, p.sousevolution
+FROM pokemon p
+inner join table_pokemon_feu t ON t.nom = p.sousevolution
+)SELECT *
+FROM table_pokemon_feu
+order by id
 
+16)
+SELECT distinct attaques
+from pokemon
+order by attaques
+
+17)
+----
+
+18)
+SELECT id, nom, attaques
+FROM pokemon
+GROUP BY id, nom, attaques
+having attaques in (SELECT attaques
+FROM pokemon
+where nom = 'Tentacool') AND nom <> 'Tentacool'
+
+19)
+SELECT id, nom, attaques
+FROM pokemon
+GROUP BY id, nom, attaques
+having split_part(attaques, ',',1) in (SELECT split_part(attaques, ',',1)
+FROM pokemon
+where nom = 'Tentacool') 
+OR split_part(attaques, ',',2) in (SELECT split_part(attaques, ',',2)
+FROM pokemon
+where nom = 'Tentacool') 
+OR split_part(attaques, ',',1) in (SELECT split_part(attaques, ',',2)
+FROM pokemon
+where nom = 'Tentacool')
+OR split_part(attaques, ',',2) in (SELECT split_part(attaques, ',',1)
+FROM pokemon
+where nom = 'Tentacool')
+order by id
+
+20)
+SELECT attaques, count(type)
+FROM pokemon
+
+group by attaques
+having count(type) > 1
+order by count(type) desc
 
