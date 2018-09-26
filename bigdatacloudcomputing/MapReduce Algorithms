@@ -1,0 +1,8 @@
+MapReduce Algorithms
+
+- Sorting;
+-- teraSort;
+- Searching;
+-- return of the search as a key (line, _) or (filename+line,_) or (filename+line+word,_)
+- Aside: Word Count
+-- Co-Occorrence
