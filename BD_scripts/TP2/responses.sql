@@ -1,11 +1,27 @@
 MODELO PRO TP NOTE
 
-1) <-- QUESTION
+
+
+--STEPS by STEPS
+
+-- access postgres on mac
+$ psql -h localhost -d wikipedia
+
+-- to create table via psql
+CREATE TABLE categories(article VARCHAR,category VARCHAR);
+CREATE TABLE links(source VARCHAR,target VARCHAR);
+-- To import mac path to database table
+COPY links from '/Users/jessefilho/Documents/BDMA/BD_scripts/TP2/Archive/categories.tsv';
+COPY links from '/Users/jessefilho/Documents/BDMA/BD_scripts/TP2/Archive/links.tsv';
+
+-----------------------------------
+Number) <-- QUESTION
 select
 from
 WHERE  <--- QUERY
 
 answer = <---- numero line
+-----------------------------------
 
 5) 
 select category, count(article)
