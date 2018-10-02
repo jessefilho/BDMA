@@ -192,17 +192,19 @@ select target from links except (select article from categories))) as tmp_table
 -- thus we need make a subtract in these table to seach all articles in links table that doesn't have 
 -- a reference on categories table what is make an article less category.
 
------------------- END question 7
-8)
-
-
-
-
 
 answer = 4
-
+------------------ END question 7
 8)
+SELECT distinct article from categories
+union
+SELECT distinct target from links
+except
+select source from links;
+
 answer = 15
+
+------------------ END question 8
 
 10) answer = United States
 11) answer = United States
