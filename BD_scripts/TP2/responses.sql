@@ -17,9 +17,9 @@ CREATE TABLE links(source VARCHAR,target VARCHAR);
 -- COPY links from '/Users/jessefilho/Documents/BDMA/BD_scripts/TP2/Archive/links.tsv';
 
 
--- To import mac path to database table on WINDOWS
-COPY link from 'F:\Documents\BMDA\DB_scripts\TP2\Archive\categories.tsv';
-COPY link from 'F:\Documents\BMDA\DB_scripts\TP2\Archive\links.tsv';
+-- To import Windows path to database table on WINDOWS
+COPY categories from 'F:\Documents\BMDA\DB_scripts\TP2\Archive\categories.tsv';
+COPY links from 'F:\Documents\BMDA\DB_scripts\TP2\Archive\links.tsv';
 
 
 -----------------------------------
@@ -237,21 +237,497 @@ WHERE nblinks = (select max(nblinks2)
 ---------------
  United_States
 (1 row)
-10) answer = United States
-11) answer = United States
+------------------ END question 10
+11.
+SELECT target FROM (select target, count(source) as qtd_t1 
+	from links group by target) as table_qtds
+WHERE qtd_t1 = (select max(qtd_t1)
+from (select target, count(source) as qtd_t1 
+	from links group by target) as top);
 
-14)
+answer =  "United_States"
+------------------ END question 11
+
+12.
+SELECT distinct source 
+from links
+where source=target
+
+"Terrorism"
+"Yeast"
+"The_Godfather"
+"Muhammad_Ali"
+"French_Open_%28tennis%29"
+"Cleopatra_VII"
+"Grand_Forks%2C_North_Dakota"
+"Nikola_Tesla"
+"John_Maynard_Keynes"
+"French_Southern_and_Antarctic_Lands"
+"Pterosaur"
+"Despotism"
+"Technetium"
+"Romeo_and_Juliet"
+"Jew"
+"Coronation_Street"
+"Doom"
+"Sesame_Street"
+"Supply_and_demand"
+"Coin"
+"Order_of_the_Garter"
+"Khazars"
+"Genghis_Khan"
+"War"
+"Nanomedicine"
+"Tornado"
+"Tobacco"
+"Genetic_code"
+"Brazil"
+"Riesling"
+"The_Famous_Five_%28characters%29"
+"Time_zone"
+"Senegal"
+"Danube"
+"Celine_Dion"
+"Eagle_Scout_%28Boy_Scouts_of_America%29"
+"Hindi"
+"Statistics"
+"King_Kong_%282005_film%29"
+"Tyrannosaurus"
+"Rain"
+"GNOME"
+"Beijing"
+"Nineteen_Eighty-Four"
+"Forest"
+"Mao_Zedong"
+"Cornell_University"
+"Renormalization"
+"Redwood_National_and_State_Parks"
+"Donald_Bradman"
+"Vatican_City"
+"Onion"
+"Coal"
+"Greenhouse_effect"
+"Britney_Spears"
+"Harlem_Globetrotters"
+"Lynton_and_Barnstaple_Railway"
+"Sleep"
+"Mexico_City"
+"Solar_System"
+"Flemish_dialects"
+"Color_blindness"
+"Vitamin_C"
+"Reptile"
+"Iron_Maiden"
+"Japanese_war_crimes"
+"Nature"
+"Erie_Canal"
+"Lung_cancer"
+"University_of_Bristol"
+"Wikimedia_Foundation"
+"Athens"
+"Newshounds"
+"Vodafone"
+"Perl"
+"Karachi"
+"El_Ni%C3%B1o-Southern_Oscillation"
+"Santiago%2C_Chile"
+"Polish-Muscovite_War_%281605%E2%80%931618%29"
+"Drinking_water"
+"American_Revolutionary_War"
+"Logic"
+"Kofi_Annan"
+"Cuba"
+"World_Trade_Organization"
+"Nintendo_DS"
+"Salsa_music"
+"Marseille"
+"Baltic_Sea"
+"Household_income_in_the_United_States"
+"Damon_Hill"
+"Saint_Petersburg"
+"Darth_Vader"
+"People%27s_Republic_of_China"
+"President_of_the_United_States"
+"Chelsea_F.C."
+"Delhi"
+"Ice"
+"Music_of_Martinique_and_Guadeloupe"
+"Mythology"
+"Vietnam"
+"Oceanography"
+"Autostereogram"
+"Plate_tectonics"
+"Charles_Etienne_Brasseur_de_Bourbourg"
+"Tashkent"
+"Pope_John_Paul_II"
+"Eva_Per%C3%B3n"
+"Gibraltar"
+"Domestic_goat"
+
+answer = 110 rows
+
+------------------ END question 12
+
+13.
+select distinct source from links where source=target
+except
+select distinct source from links where source <> target
+
+answer = 0 rows 
+
+------------------ END question 13
+
+14.
 CREATE view countries as
 select source,target from links, categories
 where category = 'subject countries'
 AND articles = source;
 
+create view math AS
+select source, target from links, categories 
+where article = target AND categry = 'subject.Mathematics'
+
+------------------ END question 14
 15)
-WITH RECURSIVE transCountries as 
+
+WITH RECURSIVE only_indirect as
+(select * from countries
+ UNION
+ select o.source, c.target
+ from only_indirect o, countries c
+ where o.target = c.source)
+ select source
+ from only_indirect
+ where source = target
+ except 
+ select source from countries
+ where source = target
+
+"Bangladesh"
+"Indonesia"
+"Venezuela"
+"Cameroon"
+"Luxembourg"
+"Republic_of_China"
+"Korea"
+"Hong_Kong"
+"Sweden"
+"Central_African_Republic"
+"Uganda"
+"Montenegro"
+"Jordan"
+"Cambodia"
+"Ireland"
+"Singapore"
+"Laos"
+"French_Guiana"
+"Brunei"
+"Uzbekistan"
+"Portugal"
+"Finland"
+"Malta"
+"Colombia"
+"French_Polynesia"
+"Albania"
+"British_Virgin_Islands"
+"Ukraine"
+"Grenada"
+"Cayman_Islands"
+"Latvia"
+"Kyrgyzstan"
+"Algeria"
+"Trinidad_and_Tobago"
+"France"
+"Maldives"
+"Slovakia"
+"Israel"
+"Djibouti"
+"C%C3%B4te_d%27Ivoire"
+"Solomon_Islands"
+"Syria"
+"Malaysia"
+"Kenya"
+"Ghana"
+"Dominican_Republic"
+"Zambia"
+"Iceland"
+"Kuwait"
+"Madagascar"
+"Liberia"
+"Philippines"
+"Tuvalu"
+"Benin"
+"Guinea"
+"Cyprus"
+"Turkey"
+"Nigeria"
+"Rwanda"
+"Saudi_Arabia"
+"Zimbabwe"
+"Tajikistan"
+"Guam"
+"British_Indian_Ocean_Territory"
+"China"
+"United_Kingdom"
+"Belarus"
+"Armenia"
+"San_Marino"
+"Qatar"
+"Netherlands"
+"Lesotho"
+"Turkish_Republic_of_Northern_Cyprus"
+"Gabon"
+"Paraguay"
+"Gal%C3%A1pagos_Islands"
+"Martinique"
+"Australia"
+"Dominica"
+"Serbia"
+"Mauritius"
+"Antigua_and_Barbuda"
+"Angola"
+"Libya"
+"Bahrain"
+"Vanuatu"
+"New_Zealand"
+"Spain"
+"East_Timor"
+"Christmas_Island"
+"Gaza_Strip"
+"Malawi"
+"Belgium"
+"Saint_Vincent_and_the_Grenadines"
+"Monaco"
+"El_Salvador"
+"Burundi"
+"South_Africa"
+"Taiwan"
+"Sri_Lanka"
+"S%C3%A3o_Tom%C3%A9_and_Pr%C3%ADncipe"
+"Bhutan"
+"Montserrat"
+"Thailand"
+"South_Korea"
+"Togo"
+"Sierra_Leone"
+"Cook_Islands"
+"The_Bahamas"
+"Italy"
+"Uruguay"
+"Oman"
+"Turks_and_Caicos_Islands"
+"Palestinian_territories"
+"Abu_Dhabi"
+"Fiji"
+"Equatorial_Guinea"
+"Costa_Rica"
+"United_Arab_Emirates"
+"Saint_Lucia"
+"Cocos_%28Keeling%29_Islands"
+"Germany"
+"Eritrea"
+"Easter_Island"
+"Canada"
+"Anguilla"
+"Czech_Republic"
+"Barbados"
+"Cape_Verde"
+"Bermuda"
+"Namibia"
+"Argentina"
+"Liechtenstein"
+"Federated_States_of_Micronesia"
+"Slovenia"
+"Azerbaijan"
+"Greece"
+"Egypt"
+"Papua_New_Guinea"
+"Afghanistan"
+"India"
+"Chad"
+"Iran"
+"Chile"
+"Puerto_Rico"
+"Estonia"
+"Abkhazia"
+"United_States"
+"Suriname"
+"Peru"
+"Kazakhstan"
+"Guadeloupe"
+"Republic_of_Ireland"
+"Kosovo"
+"Japan"
+"Saint_Kitts_and_Nevis"
+"Denmark"
+"Jamaica"
+"Saint_Helena"
+"Dubai"
+"Iraq"
+"Mauritania"
+"Mozambique"
+"Switzerland"
+"North_Korea"
+"Ecuador"
+"Hungary"
+"Russia"
+"Honduras"
+"Belize"
+"Norway"
+"The_Gambia"
+"Botswana"
+"South_Ossetia"
+"Pakistan"
+"Romania"
+"Western_Sahara"
+"Austria"
+"Guatemala"
+"Guinea-Bissau"
+"Republic_of_Macedonia"
+"Bolivia"
+"Ethiopia"
+"Niger"
+"Panama"
+"Yemen"
+"Lithuania"
+"Bulgaria"
+"Netherlands_Antilles"
+"Turkmenistan"
+"Croatia"
+"Tunisia"
+"Sudan"
+"Georgia_%28country%29"
+"Aruba"
+"West_Bank"
+"Mali"
+"Bosnia_and_Herzegovina"
+"Burkina_Faso"
+"Swaziland"
+"Morocco"
+"Moldova"
+"Myanmar"
+"Nicaragua"
+"Mexico"
+"Tibet"
+"Nepal"
+"Tonga"
+"R%C3%A9union"
+"Guyana"
+"Tanzania"
+"Poland"
+"Lebanon"
+"Greenland"
+"Serbia_and_Montenegro"
+"Falkland_Islands"
+"Haiti"
+"Samoa"
+"Somalia"
+"Andorra"
+
+220 rows
+
+------------------ END question 15
+
+16.
+SELECT target FROM math
+except
+SELECT target from 
+(SELECT t.target, m.source
+FROM math t, math m
+except 
+SELECT * FROM math) as tmp
+
+------------------ END question 16
+
+17.
+WITH RECURSIVE transcountries AS
 (SELECT * FROM countries
-union
-select t.source, l.target, t from transCountries t, countries l where t.target = l.source)
-select source from transCountries
-where source = target
-except select source from countries where source = target;
+UNION
+select t.source, l.target 
+from transCountries t, countries l
+where t.target=l.source)
+select count(source)
+from transcountries
+where source = 'France'
+
+answer = "1710"
+------------------ END question 17
+
+18.
+with recursive transCountries as 
+(select source, target from countries 
+union 
+select t.source, l.target from transCountries t, countries l
+where t.target=l.source)
+select category from categories
+except 
+select category
+from transCountries, categories 
+where source='France' and target=article;
+
+"subject.IT.Cryptography"
+"subject.Art.Artists"
+"subject.Language_and_literature.Novels"
+"subject.People.Actors_models_and_celebrities"
+
+answer = "1710"
+
+------------------ END question 18
+
+
+
+19.
+with recursive transMath as 
+(select source, target from math 
+union 
+select t.source, l.target from transMath t, math l
+where t.target=l.source)
+select target
+from transMath
+where source = 'Algebra'
+
+answer = '40 rows'
+
+"Arithmetic"
+"Differential_equation"
+"Elementary_algebra"
+"Geometry"
+"Group_%28mathematics%29"
+"Linear_algebra"
+"Mathematical_analysis"
+"Mathematics"
+"Matrix_%28mathematics%29"
+"Number"
+"Quantity"
+"Set"
+"Topology"
+"Prime_number"
+"Fundamental_theorem_of_arithmetic"
+"Elementary_arithmetic"
+"Algorithm"
+"Ordinary_differential_equation"
+"Applied_mathematics"
+"Algebra"
+"Symmetry"
+"Pythagorean_theorem"
+"Euclidean_geometry"
+"Calculus"
+"Elementary_group_theory"
+"Trigonometric_function"
+"Pi"
+"Trigonometry"
+"Statistics"
+"Probability_theory"
+"Measurement"
+"Manifold"
+"Game_theory"
+"Abacus"
+"Ordinal_number"
+"Sphere"
+"Perfect_number"
+"Fractal"
+"Polar_coordinate_system"
+"Nash_equilibrium"
+
+------------------ END question 19
 
