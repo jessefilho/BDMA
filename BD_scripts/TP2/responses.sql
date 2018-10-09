@@ -731,3 +731,25 @@ answer = '40 rows'
 
 ------------------ END question 19
 
+WITH RECURSIVE transCountries as
+(SELECT * FROM countries
+UNION
+SELECT t.source, c.target
+FROM transCountries t, countries c
+where t.target = c.source),
+transMath as
+(SELECT * FROM math
+UNION
+SELECT t.source, m.target
+FROM transMath t, math m
+WHERE t.target = m.source),
+transMathcountries as
+(select * from transMath
+ union
+SELECT t.source, tc.target
+FROM transMathcountries t, transCountries tc
+WHERE t.target = tc.source)
+SELECT avg(qtd_desc)
+FROM (select source, count(target) as qtd_desc from (select * from transMathcountries) t group by source)t
+
+"40.1123919308357349"
