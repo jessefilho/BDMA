@@ -18,8 +18,8 @@ CREATE TABLE links(source VARCHAR,target VARCHAR);
 
 
 -- To import Windows path to database table on WINDOWS
-COPY categories from 'F:\Documents\BMDA\DB_scripts\TP2\Archive\categories.tsv';
-COPY links from 'F:\Documents\BMDA\DB_scripts\TP2\Archive\links.tsv';
+COPY categories from 'F:\Documents\BMDA\DB_scripts\TP2\Archive\categories.tsv' with delimiter E'\t';
+COPY links from 'F:\Documents\BMDA\DB_scripts\TP2\Archive\links.tsv' with delimiter E'\t';
 
 
 -----------------------------------
@@ -753,3 +753,5 @@ SELECT avg(qtd_desc)
 FROM (select source, count(target) as qtd_desc from (select * from transMathcountries) t group by source)t
 
 "40.1123919308357349"
+
+------------------ END question 20
